@@ -18,7 +18,7 @@ public class AuthController {
     public ResponseEntity<?> verifyToken(@RequestHeader String idToken) {
         try {
             FirebaseToken decodedToken = firebaseAuthService.verifyToken(idToken);
-            firebaseAuthService.storeToken(idToken, decodedToken);
+
             return ResponseEntity.ok(decodedToken);
         } catch (FirebaseAuthException e) {
             return ResponseEntity.status(401).body("Invalid token");
