@@ -1,14 +1,13 @@
 package com.example.roomeasebackend.controller;
 
+import com.example.roomeasebackend.model.Maintainance;
 import com.example.roomeasebackend.model.User;
+import com.example.roomeasebackend.repository.MaintainanceRepo;
 import com.example.roomeasebackend.repository.UserRepo;
 import com.example.roomeasebackend.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -21,6 +20,7 @@ public class TaskController {
 
     @Autowired
     private UserRepo repo;
+
 
     @PostMapping("/createTask/cleaning")
     public ResponseEntity<?> createTask(@RequestParam("time_slot") String timeSlotStr,@RequestParam String uid) {
@@ -36,16 +36,19 @@ public class TaskController {
         taskService.createTask(timeSlot,user);
         return ResponseEntity.ok("Task created successfully");
     }
-    @PostMapping("/maintenance")
-    public ResponseEntity<?> createmaintenanceTask(){
 
+    @PostMapping("/maintenance")
+    public ResponseEntity<?> createmaintenanceTask(@RequestBody  Maintainance maintainance,@RequestParam String uid) {
+        User user = repo.findByfirebaseUid(uid);
+        taskService.createMaintenanceTask(maintainance,user);
         return ResponseEntity.ok("Task created successfully");
     }
-    @PostMapping("/closeTicket")
-    public ResponseEntity<?> closeTicket(@RequestParam Long taskId){
-        taskService.closeTask(taskId);
-        return ResponseEntity.ok("Task closed successfully");
 
-
-    }
+//    @PostMapping("/closeTicket")
+//    public ResponseEntity<?> closeTicket(@RequestParam Long taskId){
+//        taskService.closeTask(taskId);
+//        return ResponseEntity.ok("Task closed successfully");
+//
+//
+//    }
 }
