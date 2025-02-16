@@ -41,4 +41,11 @@ public class TaskController {
 
         return ResponseEntity.ok("Task created successfully");
     }
+    @PostMapping("/closeTicket")
+    public ResponseEntity<?> closeTicket(@RequestParam Long taskId){
+        taskService.closeTask(taskId);
+        return ResponseEntity.ok("Task closed successfully");
+
+
+    }
 }
