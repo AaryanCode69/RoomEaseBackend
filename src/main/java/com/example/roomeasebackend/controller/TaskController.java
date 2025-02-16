@@ -26,14 +26,7 @@ public class TaskController {
     public ResponseEntity<?> createTask(@RequestParam("time_slot") String timeSlotStr,@RequestParam String uid) {
 
         User user = repo.findByfirebaseUid(uid);
-        LocalTime timeSlot;
-        try {
-            timeSlot = LocalTime.parse(timeSlotStr);
-        } catch (DateTimeParseException e) {
-            return ResponseEntity.badRequest().body("Invalid time format. Please use HH:mm:ss format.");
-        }
-
-        taskService.createTask(timeSlot,user);
+        taskService.createTask(timeSlotStr,user);
         return ResponseEntity.ok("Task created successfully");
     }
 

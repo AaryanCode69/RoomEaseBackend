@@ -16,7 +16,7 @@ public class Cleaning {
     private Long ticketId;
 
     @Column(name = "time_slot", nullable = false)
-    private LocalTime timeslot;
+    private String timeslot;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

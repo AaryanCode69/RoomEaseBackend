@@ -1,11 +1,9 @@
 package com.example.roomeasebackend.service;
 
-import com.example.roomeasebackend.model.Cleaning;
-import com.example.roomeasebackend.model.Maintainance;
-import com.example.roomeasebackend.model.Status;
-import com.example.roomeasebackend.model.User;
+import com.example.roomeasebackend.model.*;
 import com.example.roomeasebackend.repository.CleaningRepo;
 import com.example.roomeasebackend.repository.MaintainanceRepo;
+import com.example.roomeasebackend.repository.WardenRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,22 @@ public class TaskService {
     @Autowired
     MaintainanceRepo maintainanceRepo;
 
-    public void createTask(LocalTime time_slot, User user) {
+    @Autowired
+    private Slot slot;
+
+    @Autowired
+    private WardenRepo wardenRepo;
+
+    public void createTask(String time_slot, User user) {
+        String Block = user.getHostelBlock();
+        slot = wardenRepo.findByBLOCK(Block);
+        if (time_slot.equals("morning")) {
+            slot.setMORNING(slot.getMORNING() - 1);
+        } else if (time_slot.equals("afternoon")) {
+            slot.setAFTERNOON(slot.getAFTERNOON() - 1);
+        } else if (time_slot.equals("evening")) {
+            slot.setEVENING(slot.getEVENING() - 1);
+        }
         cleaning.setTimeslot(time_slot);
         cleaning.setUser(user);
         taskRepo.save(cleaning);
