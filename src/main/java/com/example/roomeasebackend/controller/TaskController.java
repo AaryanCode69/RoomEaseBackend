@@ -44,11 +44,14 @@ public class TaskController {
         return ResponseEntity.ok("Task created successfully");
     }
 
-//    @PostMapping("/closeTicket")
-//    public ResponseEntity<?> closeTicket(@RequestParam Long taskId){
-//        taskService.closeTask(taskId);
-//        return ResponseEntity.ok("Task closed successfully");
-//
-//
-//    }
+    @PostMapping("/closeCleaningTicket")
+    public ResponseEntity<?> closeTicket(@RequestParam Long taskId){
+        taskService.closeTask(taskId);
+        return ResponseEntity.ok("Task closed successfully");
+        }
+    @PostMapping("/closeMaintenanceTicket")
+    public ResponseEntity<?> closeMaintenanceTicket(@RequestParam Long taskId){
+        taskService.closeMaintenanceTask(taskId);
+        return ResponseEntity.ok("Task closed successfully");
+    }
 }
