@@ -31,7 +31,8 @@ public class TaskService {
 
     public void createTask(String time_slot, User user) {
         String Block = user.getHostelBlock();
-        slot = wardenRepo.findByBLOCK(Block);
+        Hostel_Type Blocktype = user.getHostel_type();
+        slot = wardenRepo.findByBLOCKAndBLOCKTYPE(Block,Blocktype);
         if (time_slot.equals("morning")) {
             slot.setMORNING(slot.getMORNING() - 1);
         } else if (time_slot.equals("afternoon")) {

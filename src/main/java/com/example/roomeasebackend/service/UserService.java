@@ -13,8 +13,8 @@ public class UserService {
     public void createUser(String uid,String phone, String room, String hostel){
         User user = userRepo.findByfirebaseUid(uid);
         if (user == null) {
-            // Handle the case where the user is not found
-            throw new IllegalArgumentException("User not found with uid: " + uid);
+            user = new User();
+            user.setFirebaseUid(uid);
         }
         user.setRoomNo(room);
         user.setPhoneNumber(phone);

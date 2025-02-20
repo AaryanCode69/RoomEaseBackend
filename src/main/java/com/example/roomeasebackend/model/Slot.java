@@ -17,6 +17,8 @@ public class Slot {
     @Id
     @Column(name = "hostel_block")
     private String BLOCK;
+    @Column(name = "block_type")
+    private Hostel_Type BLOCKTYPE;
     @Column(name="morning")
     private int MORNING;
     @Column(name="afternoon")

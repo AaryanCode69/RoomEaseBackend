@@ -31,6 +31,10 @@ public class User {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="hostel_type",nullable = false)
+    private Hostel_Type hostel_type = Hostel_Type.Mens;
+
     @Column(name = "room_no")
     private String roomNo;
 

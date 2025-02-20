@@ -2,15 +2,13 @@ package com.example.roomeasebackend.controller;
 
 import com.example.roomeasebackend.model.Maintainance;
 import com.example.roomeasebackend.model.User;
-import com.example.roomeasebackend.repository.MaintainanceRepo;
 import com.example.roomeasebackend.repository.UserRepo;
 import com.example.roomeasebackend.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
+
 
 @RestController
 public class TaskController {
@@ -42,6 +40,7 @@ public class TaskController {
         taskService.closeTask(taskId);
         return ResponseEntity.ok("Task closed successfully");
         }
+
     @PostMapping("/closeMaintenanceTicket")
     public ResponseEntity<?> closeMaintenanceTicket(@RequestParam Long taskId){
         taskService.closeMaintenanceTask(taskId);
