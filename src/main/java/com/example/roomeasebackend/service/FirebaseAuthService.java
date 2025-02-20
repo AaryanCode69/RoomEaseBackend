@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FirebaseAuthService {
-    User user=new User();
+
+    @Autowired
+    private User user;
+
     @Autowired
     private UserRepo userRepo;
 
