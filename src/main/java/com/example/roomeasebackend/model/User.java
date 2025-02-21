@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Data
@@ -32,14 +31,16 @@ public class User {
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="hostel_type",nullable = false)
-    private Hostel_Type hostel_type = Hostel_Type.Mens;
+    @Column(name="hostel_type", nullable = true)
+    private HostelType hostelType;
 
     @Column(name = "room_no")
-    private String roomNo;
+    private String roomNumber;
 
-    @Column(name = "hostel_block",nullable = true)
+    @Column(name = "hostel_block")
     private String hostelBlock;
 
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 }

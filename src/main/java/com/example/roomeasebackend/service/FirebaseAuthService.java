@@ -12,22 +12,21 @@ import org.springframework.stereotype.Service;
 public class FirebaseAuthService {
 
     @Autowired
-    private User user;
-
-    @Autowired
     private UserRepo userRepo;
-
 
 
     public FirebaseToken verifyToken(String idToken) throws FirebaseAuthException {
         FirebaseToken decoded= FirebaseAuth.getInstance().verifyIdToken(idToken);
+
+        User user = userRepo.findByEmail(decoded.getEmail());
+        if (user == null) {
+            user = new User();
+        }
         user.setFirebaseUid(decoded.getUid());
         user.setEmail(decoded.getEmail());
         user.setName(decoded.getName());
+
         userRepo.save(user);
         return decoded;
-
     }
-
-
 }

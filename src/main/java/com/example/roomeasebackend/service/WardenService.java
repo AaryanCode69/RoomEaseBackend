@@ -1,6 +1,6 @@
 package com.example.roomeasebackend.service;
 
-import com.example.roomeasebackend.model.Hostel_Type;
+import com.example.roomeasebackend.model.HostelType;
 import com.example.roomeasebackend.model.Slot;
 import com.example.roomeasebackend.repository.WardenRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ public class WardenService {
     @Autowired
     private WardenRepo wardenRepo;
 
-    public String entry(String block, int morning, int afternoon, int evening, Hostel_Type hostel_type) {
+    public String entry(String block, int morning, int afternoon, int evening, HostelType hostel_type) {
         Slot slot = wardenRepo.findByBLOCKAndBLOCKTYPE(block, hostel_type);
         if(slot == null){
             slot = new Slot();

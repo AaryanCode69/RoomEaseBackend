@@ -4,5 +4,6 @@ import com.example.roomeasebackend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepo extends JpaRepository<User, Long> {
-    User findByfirebaseUid(String firebaseUid);
+    User findByFirebaseUid(String firebaseUid);
+    User findByEmail(String email);
 }

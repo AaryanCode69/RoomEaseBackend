@@ -11,7 +11,7 @@ public class Maintainance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "maintainance_id")
-    private Long maintainanceId;
+    private Long maintenanceId;
 
     @Column(name = "issue", nullable = false)
     private String issue;

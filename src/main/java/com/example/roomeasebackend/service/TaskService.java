@@ -7,7 +7,6 @@ import com.example.roomeasebackend.repository.WardenRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.Optional;
 
 
@@ -31,14 +30,12 @@ public class TaskService {
 
     public void createTask(String time_slot, User user) {
         String Block = user.getHostelBlock();
-        Hostel_Type Blocktype = user.getHostel_type();
+        HostelType Blocktype = user.getHostelType();
         slot = wardenRepo.findByBLOCKAndBLOCKTYPE(Block,Blocktype);
-        if (time_slot.equals("morning")) {
-            slot.setMORNING(slot.getMORNING() - 1);
-        } else if (time_slot.equals("afternoon")) {
-            slot.setAFTERNOON(slot.getAFTERNOON() - 1);
-        } else if (time_slot.equals("evening")) {
-            slot.setEVENING(slot.getEVENING() - 1);
+        switch (time_slot) {
+            case "morning" -> slot.setMORNING(slot.getMORNING() - 1);
+            case "afternoon" -> slot.setAFTERNOON(slot.getAFTERNOON() - 1);
+            case "evening" -> slot.setEVENING(slot.getEVENING() - 1);
         }
         cleaning.setTimeslot(time_slot);
         cleaning.setUser(user);

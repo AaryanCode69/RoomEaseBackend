@@ -23,14 +23,14 @@ public class TaskController {
     @PostMapping("/createTask/cleaning")
     public ResponseEntity<?> createTask(@RequestParam("time_slot") String timeSlotStr,@RequestParam String uid) {
 
-        User user = repo.findByfirebaseUid(uid);
+        User user = repo.findByFirebaseUid(uid);
         taskService.createTask(timeSlotStr,user);
         return ResponseEntity.ok("Task created successfully");
     }
 
     @PostMapping("/maintenance")
     public ResponseEntity<?> createmaintenanceTask(@RequestBody  Maintainance maintainance,@RequestParam String uid) {
-        User user = repo.findByfirebaseUid(uid);
+        User user = repo.findByFirebaseUid(uid);
         taskService.createMaintenanceTask(maintainance,user);
         return ResponseEntity.ok("Task created successfully");
     }
