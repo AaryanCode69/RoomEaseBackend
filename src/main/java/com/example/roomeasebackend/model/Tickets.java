@@ -9,8 +9,10 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "category")
 @Component
-public class Tickets {
+public abstract class Tickets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ticket_Id")
@@ -20,9 +22,7 @@ public class Tickets {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name="category", nullable = false)
-    private Category category;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status = Status.INCOMPLETED;
 
@@ -31,5 +31,4 @@ public class Tickets {
 
     @Column(name="closed_at")
     private LocalDateTime closedAt;
-
 }
