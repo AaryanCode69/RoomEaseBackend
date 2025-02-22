@@ -7,15 +7,16 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
 @Data
+@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "category")
+@Table(name = "tickets")
 @Component
 public abstract class Tickets {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ticket_Id")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "ticket_id")
     private UUID ticketId;
 
     @ManyToOne
@@ -26,9 +27,9 @@ public abstract class Tickets {
     @Column(name = "status", nullable = false)
     private Status status = Status.INCOMPLETED;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="closed_at")
+    @Column(name = "closed_at")
     private LocalDateTime closedAt;
 }
