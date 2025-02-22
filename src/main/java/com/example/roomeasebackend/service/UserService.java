@@ -28,6 +28,7 @@ public class UserService {
         user.setHostelBlock(hostel);
         user.setHostelType(hostelType);
         user.setRole(role);
+
         userRepo.save(user);
     }
 }

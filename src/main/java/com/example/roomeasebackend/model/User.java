@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Data
 @Entity
 @Table(name = "users")
@@ -16,7 +18,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userId;
+    private UUID userId;
 
     @Column(name = "firebase_uid", nullable = false, unique = true)
     private String firebaseUid;
