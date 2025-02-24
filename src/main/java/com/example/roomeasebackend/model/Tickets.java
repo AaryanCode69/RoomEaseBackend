@@ -20,8 +20,9 @@ public abstract class Tickets {
     private UUID ticketId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "firebase_uid", nullable = false)
     private User user;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
