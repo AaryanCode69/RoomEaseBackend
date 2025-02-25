@@ -1,10 +1,12 @@
 package com.example.roomeasebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.Getter;
 
+@Getter
 public enum PlumbingIssue {
     Water_Cooler("Water Cooler"),
-    Water_Filter("Water Heater"),
+    Water_Filter("Water Filter"),
     Tap("Tap"),
     Geyser("Geyser"),
     Washrooms("Washrooms"),
@@ -14,10 +16,6 @@ public enum PlumbingIssue {
 
     PlumbingIssue(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 
     @JsonCreator

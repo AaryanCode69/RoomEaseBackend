@@ -1,5 +1,8 @@
 package com.example.roomeasebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum TimeSlot {
     MORNING("Morning"),
     AFTERNOON("Afternoon"),
@@ -11,8 +14,18 @@ public enum TimeSlot {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return this.value;
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @JsonCreator
+    public static TimeSlot fromValue(String value) {
+        for (TimeSlot timeSlot : TimeSlot.values()) {
+            if (timeSlot.value.equalsIgnoreCase(value)) {
+                return timeSlot;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + value);
     }
 }
