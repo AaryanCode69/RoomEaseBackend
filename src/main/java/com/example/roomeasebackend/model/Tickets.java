@@ -20,7 +20,7 @@ public abstract class Tickets {
     private UUID ticketId;
 
     @ManyToOne
-    @JoinColumn(name = "firebase_uid", nullable = false)
+    @JoinColumn(name = "firebase_uid", referencedColumnName = "firebase_uid", nullable = false)
     private User user;
 
 
