@@ -15,7 +15,7 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     @Autowired
-    private UserRepo UserRepo;
+    private UserRepo userRepo;
 
     public Tickets createCleaningTask(CleaningTicketDTO dto) {
         CleaningTicket task = new CleaningTicket();
@@ -50,9 +50,41 @@ public class TaskService {
     }
 
     private void setBaseFields(Tickets task, BaseTicketDTO dto) {
-        User user = UserRepo.findByFirebaseUid(dto.getFirebaseUid());
+        User user = userRepo.findByFirebaseUid(dto.getFirebaseUid());
         task.setUser(user);
         task.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : LocalDateTime.now());
         task.setClosedAt(dto.getClosedAt());
+    }
+//we can cannot find task by category directly since it is discrimantory column
+// so have to run manual query in repo by finding the class of that category and passing that class
+    public Tickets closeTask(String firebaseUid, String category) {
+        Class<? extends Tickets> categoryClass;
+        switch (category.toUpperCase()) {
+            case "CLEANING":
+                categoryClass = CleaningTicket.class;
+                break;
+            case "ELECTRICAL":
+                categoryClass = ElectricalTicket.class;
+                break;
+            case "PLUMBING":
+                categoryClass = PlumbingTicket.class;
+                break;
+            case "AC":
+                categoryClass = AcTicket.class;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid category: " + category);
+        }
+        User user = userRepo.findByFirebaseUid(firebaseUid);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        Tickets task = taskRepository.findByUserAndStatusAndCategory(user, Status.INCOMPLETED, categoryClass);
+        if (task == null) {
+            throw new RuntimeException("Task not found or already completed");
+        }
+        task.setStatus(Status.COMPLETED);
+        task.setClosedAt(LocalDateTime.now());
+        return taskRepository.save(task);
     }
 }

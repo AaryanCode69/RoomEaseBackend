@@ -1,5 +1,6 @@
 package com.example.roomeasebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,6 @@ public abstract class Tickets {
     @JoinColumn(name = "firebase_uid", referencedColumnName = "firebase_uid", nullable = false)
     private User user;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status = Status.INCOMPLETED;
@@ -33,4 +33,9 @@ public abstract class Tickets {
 
     @Column(name = "closed_at")
     private LocalDateTime closedAt;
+
+    @Transient
+    public String getCategory() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+    }
 }
