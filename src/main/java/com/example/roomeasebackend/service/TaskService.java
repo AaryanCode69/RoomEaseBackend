@@ -5,8 +5,10 @@ import com.example.roomeasebackend.model.*;
 import com.example.roomeasebackend.repository.TaskRepository;
 import com.example.roomeasebackend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -17,7 +19,12 @@ public class TaskService {
     @Autowired
     private UserRepo userRepo;
 
+
     public Tickets createCleaningTask(CleaningTicketDTO dto) {
+        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, CleaningTicket.class);
+        if(tickets!=null){
+            throw new RuntimeException("Task already exists");
+        }
         CleaningTicket task = new CleaningTicket();
         setBaseFields(task, dto);
         task.setTimeSlot(dto.getTimeSlot());
@@ -25,6 +32,10 @@ public class TaskService {
     }
 
     public Tickets createElectricalTask(ElectricalTicketDTO dto) {
+        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, ElectricalTicket.class);
+        if(tickets!=null){
+            throw new RuntimeException("Task already exists");
+        }
         ElectricalTicket task = new ElectricalTicket();
         setBaseFields(task, dto);
         task.setElectricalIssue(dto.getElectricalIssue());
@@ -34,6 +45,10 @@ public class TaskService {
     }
 
     public Tickets createPlumbingTask(PlumbingTicketDTO dto) {
+        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, PlumbingTicket.class);
+        if(tickets!=null){
+            throw new RuntimeException("Task already exists");
+        }
         PlumbingTicket task = new PlumbingTicket();
         setBaseFields(task, dto);
         task.setPlumbingIssue(dto.getPlumbingIssue());
@@ -42,6 +57,10 @@ public class TaskService {
     }
 
     public Tickets createAcTask(AcTicketDTO dto) {
+        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, AcTicket.class);
+        if(tickets!=null){
+            throw new RuntimeException("Task already exists");
+        }
         AcTicket task = new AcTicket();
         setBaseFields(task, dto);
         task.setDescription(dto.getDescription());
