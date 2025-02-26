@@ -19,12 +19,27 @@ public class TaskService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private WardenService wardenService;
 
     public Tickets createCleaningTask(CleaningTicketDTO dto) {
         Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, CleaningTicket.class);
         if(tickets!=null){
             throw new RuntimeException("Task already exists");
         }
+        User user = userRepo.findByFirebaseUid(dto.getFirebaseUid());
+
+        boolean slotAvailable = wardenService.updateSlotAvailability(
+                user.getHostelBlock(),
+                dto.getTimeSlot().toString(),
+                user.getHostelType(),
+                false
+        );
+
+        if (!slotAvailable) {
+            throw new RuntimeException("No slots available for selected time");
+        }
+
         CleaningTicket task = new CleaningTicket();
         setBaseFields(task, dto);
         task.setTimeSlot(dto.getTimeSlot());
