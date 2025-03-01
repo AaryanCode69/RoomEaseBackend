@@ -14,7 +14,7 @@ public class ElectricalTicket extends Tickets {
     @Column(name = "electrical_issue", nullable = false)
     private ElectricalIssue electricalIssue;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
     @Column(name= "time_slot")

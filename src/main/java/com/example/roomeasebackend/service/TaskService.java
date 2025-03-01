@@ -5,10 +5,8 @@ import com.example.roomeasebackend.model.*;
 import com.example.roomeasebackend.repository.TaskRepository;
 import com.example.roomeasebackend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class TaskService {
@@ -23,7 +21,7 @@ public class TaskService {
     private WardenService wardenService;
 
     public Tickets createCleaningTask(CleaningTicketDTO dto) {
-        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, CleaningTicket.class);
+        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.PENDING, CleaningTicket.class);
         if(tickets!=null){
             throw new RuntimeException("Task already exists");
         }
@@ -47,7 +45,7 @@ public class TaskService {
     }
 
     public Tickets createElectricalTask(ElectricalTicketDTO dto) {
-        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, ElectricalTicket.class);
+        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.PENDING, ElectricalTicket.class);
         if(tickets!=null){
             throw new RuntimeException("Task already exists");
         }
@@ -60,7 +58,7 @@ public class TaskService {
     }
 
     public Tickets createPlumbingTask(PlumbingTicketDTO dto) {
-        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, PlumbingTicket.class);
+        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.PENDING, PlumbingTicket.class);
         if(tickets!=null){
             throw new RuntimeException("Task already exists");
         }
@@ -72,7 +70,7 @@ public class TaskService {
     }
 
     public Tickets createAcTask(AcTicketDTO dto) {
-        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.INCOMPLETED, AcTicket.class);
+        Tickets tickets=taskRepository.findByUserAndStatusAndCategory(userRepo.findByFirebaseUid(dto.getFirebaseUid()), Status.PENDING, AcTicket.class);
         if(tickets!=null){
             throw new RuntimeException("Task already exists");
         }
@@ -89,31 +87,22 @@ public class TaskService {
         task.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : LocalDateTime.now());
         task.setClosedAt(dto.getClosedAt());
     }
-//we can cannot find task by category directly since it is discrimantory column
+
+//we can cannot find task by category directly since it is discriminatory column
 // so have to run manual query in repo by finding the class of that category and passing that class
     public Tickets closeTask(String firebaseUid, String category) {
-        Class<? extends Tickets> categoryClass;
-        switch (category.toUpperCase()) {
-            case "CLEANING":
-                categoryClass = CleaningTicket.class;
-                break;
-            case "ELECTRICAL":
-                categoryClass = ElectricalTicket.class;
-                break;
-            case "PLUMBING":
-                categoryClass = PlumbingTicket.class;
-                break;
-            case "AC":
-                categoryClass = AcTicket.class;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid category: " + category);
-        }
+        Class<? extends Tickets> categoryClass = switch (category.toUpperCase()) {
+            case "CLEANING" -> CleaningTicket.class;
+            case "ELECTRICAL" -> ElectricalTicket.class;
+            case "PLUMBING" -> PlumbingTicket.class;
+            case "AC" -> AcTicket.class;
+            default -> throw new IllegalArgumentException("Invalid category: " + category);
+        };
         User user = userRepo.findByFirebaseUid(firebaseUid);
         if (user == null) {
             throw new RuntimeException("User not found");
         }
-        Tickets task = taskRepository.findByUserAndStatusAndCategory(user, Status.INCOMPLETED, categoryClass);
+        Tickets task = taskRepository.findByUserAndStatusAndCategory(user, Status.PENDING, categoryClass);
         if (task == null) {
             throw new RuntimeException("Task not found or already completed");
         }
