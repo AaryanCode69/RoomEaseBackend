@@ -16,5 +16,6 @@ RUN ./gradlew build --info --no-daemon -x test
 FROM eclipse-temurin:23-jre
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
+COPY src/main/resources/root.crt /app/root.crt
 EXPOSE 8080
 ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
